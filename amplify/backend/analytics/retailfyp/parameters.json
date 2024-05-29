@@ -1,0 +1,21 @@
+{
+    "appName": "retailfyp",
+    "roleName": "pinpointLambdaRoled93c3cc9",
+    "cloudformationPolicyName": "cloudformationPolicyd93c3cc9",
+    "cloudWatchPolicyName": "cloudWatchPolicyd93c3cc9",
+    "pinpointPolicyName": "pinpointPolicyd93c3cc9",
+    "authPolicyName": "pinpoint_amplify_d93c3cc9",
+    "unauthPolicyName": "pinpoint_amplify_d93c3cc9",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

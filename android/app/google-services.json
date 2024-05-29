@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836380965897",
+    "project_id": "retailapp2671",
+    "storage_bucket": "retailapp2671.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836380965897:android:8891d710e18569d7ad0cd8",
+        "android_client_info": {
+          "package_name": "com.uifyp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvhojXn2tuEe4hPvojhc-SsX1RYPfxbgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

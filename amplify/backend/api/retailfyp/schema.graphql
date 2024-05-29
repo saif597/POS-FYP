@@ -1,0 +1,137 @@
+enum UserRole {
+  GENERAL_MANAGER
+  CASHIER
+  WAREHOUSE_MANAGER
+  PURCHASER
+}
+
+enum BillStatus {
+  PENDING
+  CONFIRMED
+  PAID
+  RECEIVED
+}
+
+type Store @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String! @index(name: "byName", queryField: "storeByName", sortKeyFields: ["id"])
+  currency:String
+  address: String
+  contact: String
+  users: [User] @hasMany
+  products: [Product] @hasMany
+  bills: [Bill] @hasMany
+  purchaseOrder: [PurchaseOrder] @hasMany
+  warehouseScan: [WarehouseScan] @hasMany
+  billItems: [BillItem] @hasMany
+  category:[Category]  @hasMany
+  notifications:[Notifications]  @hasMany
+}
+
+type Category @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+  description: String
+  product: [Product] @hasMany
+  store: Store @belongsTo
+}
+
+type Notifications @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  warehousequanity: Int
+  shelfquantity: Int
+  productID: ID
+  productname: String
+  isRead: Boolean
+  isWarehouseNotification: Boolean
+  isShelfNotification: Boolean
+  store: Store @belongsTo
+}
+
+
+type User @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  userId: ID! @index(name: "byUserId", queryField: "userById", sortKeyFields: ["id"])
+  username: String! @index(name: "byUserName", queryField: "userByName", sortKeyFields: ["id"])
+  phonenumber: String
+  password: String
+  image: String
+  role: UserRole!
+  idcardimage: [String]
+  store: Store @belongsTo
+  bills: String
+  purchaseOrders: String
+}
+
+type Product @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String! @index(name: "byName", queryField: "productByName", sortKeyFields: ["id"])
+  barcode: String! @index(name: "byBarcode", queryField: "productByBarcode", sortKeyFields: ["id"])
+  image: String
+  price: Float!
+  manufacturer: String
+  category: String
+  category1: Category @belongsTo
+  warehouseQuantity: Int!
+  shelfQuantity: Int!
+  warehouseInventoryLimit: Int
+  shelfInventoryLimit: Int
+  store: Store @belongsTo
+  billItems: [BillItem] @hasMany
+  purchaseItems: [PurchaseItem] @hasMany
+}
+
+type BillItem @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  product: Product! @belongsTo 
+  productName: String
+  quantity: Int!
+  productPrice: Float!
+  subtotal: Float!
+  category: String
+  manufacturer: String
+  bill: Bill @belongsTo
+  store: Store @belongsTo
+}
+
+type Bill @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  cashier:  String! @index(name: "byCashierId", queryField: "billByCashierId", sortKeyFields: ["id"])
+  cashierName: String
+  items: [BillItem!]! @hasMany
+  totalAmount: Float!
+  status: BillStatus!
+  store: Store @belongsTo
+}
+
+type PurchaseOrder @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  purchaser: ID! @index(name: "byPurchaserId", queryField: "poByPurchaserId", sortKeyFields: ["id"])
+  purchaserName:String
+  vendor: String
+  store: Store @belongsTo
+  items: [PurchaseItem!]! @hasMany
+  totalAmount: Float!
+  status: BillStatus
+}
+
+type PurchaseItem @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  product: Product! @belongsTo 
+  productName: String
+  productPrice: Float
+  productTag: Int
+  quantityOrdered:Int!
+  quantityReceived:Int!
+  purchaseOrder: PurchaseOrder @belongsTo
+}
+
+type WarehouseScan @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  scannedBy: ID
+  scannedByName: String
+  productId: ID
+  productName: String
+  productQuantity: Int
+  store: Store @belongsTo
+}
